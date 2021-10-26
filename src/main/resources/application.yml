@@ -1,0 +1,32 @@
+securityTokenService:
+  discoveryUrl: ${SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL}
+
+kafka:
+  keystore.path: ${KAFKA_KEYSTORE_PATH:}
+  truststore.path: ${KAFKA_TRUSTSTORE_PATH:}
+  credstore.password: ${KAFKA_CREDSTORE_PASSWORD:}
+  brokers: ${KAFKA_BROKERS:localhost:9092}
+  security.protocol: SSL
+  retry:
+    topic: ${KAFKA_RETRY_TOPICNAME}
+    groupid: eessi-pensjon-retry-group
+
+eessi.pensjon.retry:
+  s3:
+    bucket.name: 'eessipensjon-retry'
+
+s3_region: us-east-1
+
+#Metrics
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: info, health, metrics, prometheus
+  endpoint:
+    info:
+      show-details: "ALWAYS"
