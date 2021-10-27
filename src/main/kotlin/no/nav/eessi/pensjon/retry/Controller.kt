@@ -1,9 +1,10 @@
 package no.nav.eessi.pensjon.retry
 
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 
-@RestController
+@RestController("/")
 class Controller(private val retryKafkaHandler: RetryKafkaHandler) {
 
 
@@ -15,4 +16,8 @@ class Controller(private val retryKafkaHandler: RetryKafkaHandler) {
 
     }
 
+    @GetMapping("retrylist")
+    fun henteListeAvFeiledeHendelser() : String{
+        return ""
+    }
 }

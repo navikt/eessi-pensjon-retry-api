@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import no.nav.eessi.pensjon.eux.model.sed.SedType
 import no.nav.eessi.pensjon.json.mapJsonToAny
 import no.nav.eessi.pensjon.json.typeRefs
-import no.nav.eessi.pensjon.retry.BucType
 import no.nav.eessi.pensjon.personoppslag.Fodselsnummer
 
 @JsonIgnoreProperties(ignoreUnknown = true)

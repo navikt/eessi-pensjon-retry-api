@@ -11,12 +11,8 @@ class RetryKafkaHandler(private val aivenKafkaTemplate: KafkaTemplate<String, St
 
 
     fun publishRetryHendelsePaaKafka(hendlse: String) {
-
         aivenKafkaTemplate.send(RetryMessage(RetryMessagePayload("Hei"))).get()
-
     }
-
-
 }
 
 data class RetryMessagePayload(

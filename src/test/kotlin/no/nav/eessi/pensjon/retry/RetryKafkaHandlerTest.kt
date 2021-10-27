@@ -1,0 +1,41 @@
+package no.nav.eessi.pensjon.retry
+
+import com.ninjasquad.springmockk.SpykBean
+import no.nav.eessi.pensjon.utils.toJson
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.MediaType
+import org.springframework.kafka.test.context.EmbeddedKafka
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+
+
+@SpringBootTest(value = ["SPRING_PROFILES_ACTIVE", "integrationtest"])
+@ActiveProfiles("integrationtest")
+@DirtiesContext
+@EmbeddedKafka(topics = [""])
+internal class RetryIntegrationTest(){
+
+    @Autowired
+    private lateinit var mockMvc: MockMvc
+
+    @SpykBean
+    private lateinit var controller: Controller
+
+    @Test
+    fun `Rest-kall til kontroller skal gi en liste tilbake`(){
+        val retList = listOf<String>()
+
+        val result = mockMvc.perform(
+            MockMvcRequestBuilders.get("/")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(retList.toJson()))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+        println(result.response.getContentAsString(charset("UTF-8")))
+    }
+}
