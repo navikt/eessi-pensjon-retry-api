@@ -1,4 +1,4 @@
-package no.nav.eessi.pensjon.statistikk.architecture
+package no.nav.eessi.pensjon.retry.architecture
 
 import com.tngtech.archunit.core.importer.ClassFileImporter
 import com.tngtech.archunit.core.importer.ImportOption

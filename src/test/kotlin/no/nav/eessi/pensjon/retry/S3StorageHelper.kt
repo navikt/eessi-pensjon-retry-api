@@ -1,4 +1,4 @@
-package no.nav.eessi.pensjon.statistikk
+package no.nav.eessi.pensjon.retry
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider
 import com.amazonaws.auth.AnonymousAWSCredentials
