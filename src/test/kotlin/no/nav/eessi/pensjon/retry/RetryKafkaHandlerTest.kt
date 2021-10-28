@@ -3,11 +3,8 @@ package no.nav.eessi.pensjon.retry
 import com.ninjasquad.springmockk.MockkBean
 import com.ninjasquad.springmockk.SpykBean
 import io.mockk.every
-import io.mockk.mockk
 import no.nav.eessi.pensjon.personoppslag.pdl.PersonService
 import no.nav.eessi.pensjon.security.sts.STSService
-import no.nav.eessi.pensjon.security.sts.typeRef
-import no.nav.eessi.pensjon.utils.mapAnyToJson
 import no.nav.eessi.pensjon.utils.mapJsonToAny
 import no.nav.eessi.pensjon.utils.toJson
 import no.nav.eessi.pensjon.utils.typeRefs
@@ -16,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.kafka.test.context.EmbeddedKafka
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -46,7 +41,7 @@ internal class RetryIntegrationTest(){
 
     @Test
     fun `Rest-kall til kontroller skal gi en liste tilbake`(){
-        val retList = listOf<HendelsModelRetry>(
+        val retList = listOf<HendelseModelRetry>(
             mockHendelse(HendelseType.SENDT),
             mockHendelse(HendelseType.MOTTATT))
 
@@ -63,7 +58,7 @@ internal class RetryIntegrationTest(){
 
     }
 
-    private fun mockHendelse(hendelseType: HendelseType) : HendelsModelRetry {
+    private fun mockHendelse(hendelseType: HendelseType) : HendelseModelRetry {
         val mockhendelse = """
             {
               "id": 1869,
@@ -84,7 +79,7 @@ internal class RetryIntegrationTest(){
             }
         """.trimIndent()
 
-        return HendelsModelRetry(mapJsonToAny(mockhendelse, typeRefs()),
+        return HendelseModelRetry(mapJsonToAny(mockhendelse, typeRefs()),
         hendelseType = hendelseType)
 
 

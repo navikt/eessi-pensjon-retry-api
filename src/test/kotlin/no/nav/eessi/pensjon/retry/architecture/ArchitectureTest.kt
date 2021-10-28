@@ -31,7 +31,7 @@ class ArchitectureTest {
     @BeforeAll
     fun beforeAll() {
         // Validate number of classes to analyze
-        assertTrue(classesToAnalyze.size > 50, "Sanity check on no. of classes to analyze")
+        assertTrue(classesToAnalyze.size > 10, "Sanity check on no. of classes to analyze")
         assertTrue(classesToAnalyze.size < 800, "Sanity check on no. of classes to analyze")
     }
 

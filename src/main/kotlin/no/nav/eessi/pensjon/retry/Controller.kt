@@ -12,12 +12,10 @@ class Controller(private val retryKafkaHandler: RetryKafkaHandler, private val r
     fun opprettValgtHendelsePaaTopic() {
 
         //do stuff here
-        retryKafkaHandler.publishRetryHendelsePaaKafka("hei fra post")
-
     }
 
     @GetMapping("retrylist")
-    fun henteListeAvFeiledeHendelser() : List<HendelsModelRetry>{
+    fun henteListeAvFeiledeHendelser() : List<HendelseModelRetry>{
         return retryService.hentAlleFeiledeHendelser()
     }
 }

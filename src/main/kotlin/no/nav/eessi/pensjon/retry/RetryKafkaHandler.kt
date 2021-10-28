@@ -7,20 +7,16 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
-class RetryKafkaHandler(private val aivenKafkaTemplate: KafkaTemplate<String, String>) {
+class RetryKafkaHandler(private val aivenKafkaTemplate: KafkaTemplate<HendelseModelRetry, String>) {
 
-    fun publishRetryHendelsePaaKafka(hendlse: String) {
-        aivenKafkaTemplate.send(RetryMessage(RetryMessagePayload("Hei"))).get()
+    fun publishRetryHendelsePaaKafka(hendelseModelRetry: HendelseModelRetry) {
+        aivenKafkaTemplate.send(RetryMessage(hendelseModelRetry)).get()
     }
 }
 
-data class RetryMessagePayload(
-    val data: String
-)
-
 class RetryMessage(
-    private val payload: RetryMessagePayload
-): Message<RetryMessagePayload> {
-    override fun getPayload(): RetryMessagePayload = payload
-    override fun getHeaders(): MessageHeaders = MessageHeaders(mapOf("hendelsetype" to "RETRY", "opprettet" to LocalDateTime.now()))
+    private val payload: HendelseModelRetry
+): Message<HendelseModelRetry> {
+    override fun getPayload(): HendelseModelRetry = payload
+    override fun getHeaders(): MessageHeaders = MessageHeaders(mapOf( "opprettet" to LocalDateTime.now()))
 }
