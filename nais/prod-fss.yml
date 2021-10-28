@@ -50,8 +50,8 @@ spec:
     requests:
       cpu: 400m
       memory: 4024Mi
-  vault:
-    enabled: true
-    paths:
-      - kvPath: {{appsecrets}}
-        mountPath: /var/run/secrets/nais.io/appcredentials
+#  vault:
+#    enabled: true
+#    paths:
+#      - kvPath: {{appsecrets}}
+#        mountPath: /var/run/secrets/nais.io/appcredentials
