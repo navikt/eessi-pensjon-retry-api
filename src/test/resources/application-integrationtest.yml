@@ -40,3 +40,5 @@ bestemsak_url: http://localhost:${mockserverport}
 pensjonsinformasjon:
   url: 'http://example.com:8099'
 PDL_URL: http://localhost:${mockserverport}
+
+mockserverport: 8888

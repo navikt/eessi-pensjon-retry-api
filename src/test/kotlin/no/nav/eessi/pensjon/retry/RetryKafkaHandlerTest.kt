@@ -45,6 +45,8 @@ internal class RetryIntegrationTest(){
             .content(retList.toJson()))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
+
         println(result.response.getContentAsString(charset("UTF-8")))
+
     }
 }

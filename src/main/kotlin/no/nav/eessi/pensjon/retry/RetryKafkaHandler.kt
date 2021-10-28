@@ -9,7 +9,6 @@ import java.time.LocalDateTime
 @Service
 class RetryKafkaHandler(private val aivenKafkaTemplate: KafkaTemplate<String, String>) {
 
-
     fun publishRetryHendelsePaaKafka(hendlse: String) {
         aivenKafkaTemplate.send(RetryMessage(RetryMessagePayload("Hei"))).get()
     }
