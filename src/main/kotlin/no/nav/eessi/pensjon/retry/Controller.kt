@@ -17,7 +17,7 @@ class Controller(private val retryKafkaHandler: RetryKafkaHandler) {
     }
 
     @GetMapping("retrylist")
-    fun henteListeAvFeiledeHendelser() : List<String>{
-        return listOf("a","b")
+    fun henteListeAvFeiledeHendelser() : List<HendelsModelRetry>{
+        return listOf()
     }
 }
