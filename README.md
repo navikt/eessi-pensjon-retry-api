@@ -1,12 +1,13 @@
-![](https://github.com/navikt/eessi-pensjon-statistikk/workflows/Bygg%20og%20deploy%20Q2/badge.svg)
-![](https://github.com/navikt/eessi-pensjon-statistikk/workflows/Manuell%20deploy/badge.svg)
+![](https://github.com/navikt/eessi-pensjon-retry-api/workflows/Bygg%20og%20deploy%20Q2/badge.svg)
+![](https://github.com/navikt/eessi-pensjon-retry-api/workflows/Manuell%20deploy/badge.svg)
 
 # eessi-pensjon-retry-api
-Opprette statistikk
+Rekjøring av feilede hendelser fra sedMottatt eller sedSent hendlerser 
+fra eux-rina-events
 
 # Utvikling
 
-Kjør med java 1.8
+Kjør med java 11
 
 ## Komme i gang
 

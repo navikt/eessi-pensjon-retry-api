@@ -46,9 +46,10 @@ dependencies {
 
     //eessi pensjon libs
     implementation("no.nav.eessi.pensjon:ep-logging:1.0.12")
-    implementation("no.nav.eessi.pensjon:ep-personoppslag:7.1.2")
+    implementation("no.nav.eessi.pensjon:ep-personoppslag:8.0.21")
     implementation("no.nav.eessi.pensjon:ep-security-sts:0.0.10")
-    implementation("no.nav.eessi.pensjon:ep-eux:1.0.54")
+    implementation("no.nav.eessi.pensjon:ep-eux:1.0.55")
+    implementation("no.nav.eessi.pensjon:ep-metrics:0.4.0")
 
     // Spring-boot
     implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
@@ -66,7 +67,6 @@ dependencies {
 
     // Micrometer
     implementation("io.micrometer:micrometer-registry-prometheus")
-    implementation("no.nav.eessi.pensjon:ep-metrics:0.4.0")
 
     // Logging
     implementation("net.logstash.logback:logstash-logback-encoder:${logstashLogbackVersion}")
@@ -149,7 +149,7 @@ repositories {
 
     mavenCentral()
 
-    ["maven-release","ep-metrics", "ep-security-sts", "ep-personoppslag"].each { repo ->
+    ["maven-release","ep-metrics", "ep-eux", "ep-security-sts", "ep-personoppslag"].each { repo ->
         String token = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key")
         if (!token) throw new NullPointerException("Missing token, you have to set GITHUB_TOKEN or gpr.key, see README")
         maven {
