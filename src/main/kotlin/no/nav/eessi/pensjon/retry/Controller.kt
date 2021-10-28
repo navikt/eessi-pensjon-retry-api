@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController("/")
-class Controller(private val retryKafkaHandler: RetryKafkaHandler) {
+class Controller(private val retryKafkaHandler: RetryKafkaHandler, private val retryService: RetryService) {
 
 
     @PostMapping
@@ -18,6 +18,6 @@ class Controller(private val retryKafkaHandler: RetryKafkaHandler) {
 
     @GetMapping("retrylist")
     fun henteListeAvFeiledeHendelser() : List<HendelsModelRetry>{
-        return listOf()
+        return retryService.hentAlleFeiledeHendelser()
     }
 }

@@ -2,6 +2,8 @@ package no.nav.eessi.pensjon.retry
 
 import com.ninjasquad.springmockk.MockkBean
 import com.ninjasquad.springmockk.SpykBean
+import io.mockk.every
+import io.mockk.mockk
 import no.nav.eessi.pensjon.personoppslag.pdl.PersonService
 import no.nav.eessi.pensjon.security.sts.STSService
 import no.nav.eessi.pensjon.utils.toJson
@@ -31,6 +33,9 @@ internal class RetryIntegrationTest(){
 
     @Autowired
     private lateinit var mockMvc: MockMvc
+
+    @MockkBean
+    private lateinit var retryService: RetryService
 
     @SpykBean
     private lateinit var controller: Controller
