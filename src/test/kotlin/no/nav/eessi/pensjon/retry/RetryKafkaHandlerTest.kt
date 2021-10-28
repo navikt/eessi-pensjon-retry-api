@@ -1,9 +1,13 @@
 package no.nav.eessi.pensjon.retry
 
+import com.ninjasquad.springmockk.MockkBean
 import com.ninjasquad.springmockk.SpykBean
+import no.nav.eessi.pensjon.personoppslag.pdl.PersonService
+import no.nav.eessi.pensjon.security.sts.STSService
 import no.nav.eessi.pensjon.utils.toJson
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.kafka.test.context.EmbeddedKafka
@@ -16,9 +20,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 @SpringBootTest(value = ["SPRING_PROFILES_ACTIVE", "integrationtest"])
 @ActiveProfiles("integrationtest")
-@DirtiesContext
-@EmbeddedKafka(topics = [""])
+@AutoConfigureMockMvc
 internal class RetryIntegrationTest(){
+
+    @MockkBean
+    lateinit var stsService: STSService
+
+    @MockkBean
+    lateinit var personService: PersonService
 
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -31,7 +40,7 @@ internal class RetryIntegrationTest(){
         val retList = listOf<String>()
 
         val result = mockMvc.perform(
-            MockMvcRequestBuilders.get("/")
+            MockMvcRequestBuilders.get("/retrylist")
             .contentType(MediaType.APPLICATION_JSON)
             .content(retList.toJson()))
             .andExpect(MockMvcResultMatchers.status().isOk)
