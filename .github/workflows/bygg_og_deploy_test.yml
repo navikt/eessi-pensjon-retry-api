@@ -40,7 +40,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # DEPLOYER TIL NAIS
+      # DEPLOYER TIL NAIS Q2
       - name: 'Deploy to eessipensjon namespace'
         uses: nais/deploy/actions/deploy@v1
         env:
@@ -62,3 +62,4 @@ jobs:
           repository: ${{ github.repository }}
           event-type: deploy-prod
           client-payload: '{"image": "${{ env.IMAGE }}"}'
+
