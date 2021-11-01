@@ -15,6 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
+import org.springframework.kafka.annotation.EnableKafka
+import org.springframework.kafka.test.context.EmbeddedKafka
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -22,8 +24,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.net.ServerSocket
 
 
+
 @SpringBootTest(value = ["SPRING_PROFILES_ACTIVE", "integrationtest"])
 @ActiveProfiles("integrationtest")
+@EmbeddedKafka
 @AutoConfigureMockMvc
 internal class RetryIntegrationTest() {
 
@@ -59,6 +63,27 @@ internal class RetryIntegrationTest() {
             """.trim()
         val resultContent = result.response.getContentAsString(charset("UTF-8"))
         Assertions.assertEquals(expected, resultContent)
+    }
+
+    @Test
+    fun `Rest-kall til kontroller skal legge hendelse på topic`() {
+        lagreHendelsePaaS3(HendelseType.MOTTATT)
+        lagreHendelsePaaS3(HendelseType.SENDT)
+
+        Assertions.assertEquals(2, retryService.hentAlleFeiledeHendelser().size)
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/retry")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mockHendelse(HendelseType.MOTTATT).toJson())
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+
+        Assertions.assertEquals(1, retryService.hentAlleFeiledeHendelser().size)
+
+
     }
 
     @Test
