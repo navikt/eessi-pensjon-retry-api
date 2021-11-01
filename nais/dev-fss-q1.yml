@@ -15,7 +15,7 @@ spec:
       value: https://sts-q1.preprod.local/SecurityTokenServiceProvider/
     - name: KAFKA_RETRY_TOPICNAME
       value: eessipensjon.public-retry-q1
-    - name: S3_FSS_URL
+    - name: S3_URL
       value: http://objectstore.rook-ceph.svc.nais.local
     - name: EESSI_PENSJON_RETRY_S3_CREDS_USERNAME
       value: 6CM9IETIVLHPA21OCIWT

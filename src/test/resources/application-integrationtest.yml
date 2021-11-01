@@ -8,14 +8,13 @@ kafka:
 eessi_pensjon_retry_s3_creds_username: 'dummy'
 eessi_pensjon_retry_s3_creds_password: 'dummy'
 
-s3_url: 'http://objectstore.rook-ceph.svc.nais.local'
+s3_url: 'http://localhost'
 s3_region: 'us-east-1'
-s3_fss_url: "http://objectstore.rook-ceph.svc.nais.local"
 
-eessi.pensjon.retry.api:
+eessi.pensjon.retry:
   s3:
-    bucket.name: 'eessipensjon'
-ENV: 'q2'
+    bucket.name: 'eessipensjon-retry'
+ENV: 'test'
 
 spring:
   main:

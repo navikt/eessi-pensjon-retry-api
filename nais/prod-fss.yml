@@ -17,7 +17,7 @@ spec:
       value: https://security-token-service.nais.adeo.no/rest/v1/sts/.well-known/openid-configuration
     - name: SECURITYTOKENSERVICE_URL
       value: https://sts.adeo.no/SecurityTokenServiceProvider/
-    - name: S3_FSS_URL
+    - name: S3_URL
       value: http://objectstore.rook-ceph.svc.nais.local
     - name: EESSI_PENSJON_RETRY_S3_CREDS_USERNAME
       value: 4BCDP6BBQVV56JZDIGL3

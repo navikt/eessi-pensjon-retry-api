@@ -26,12 +26,12 @@ class S3StorageHelper {
                     AwsClientBuilder.EndpointConfiguration("http://localhost:$s3Port", "us-east-1")
                 )
                 .build()
-                .also { it.createBucket("eessipensjon") }
+                .also { it.createBucket("eessipensjon-retry-test") }
 
             return S3StorageService(s3MockClient).also {
                 it.bucketname  = s3MockClient.listBuckets().get(0).name
-                it.env = "q1"
-            }
+                it.env = "test"
+            }.also { println("S3StorageService: bucketname: ${it.bucketname}, port: $s3Port") }
         }
     }
 }

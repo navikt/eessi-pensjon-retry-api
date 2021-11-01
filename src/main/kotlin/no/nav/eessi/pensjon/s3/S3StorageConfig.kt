@@ -21,7 +21,7 @@ class S3StorageConfig {
     @Value("\${eessi_pensjon_retry_s3_creds_password}")
     lateinit var secretKey: String
 
-    @Value("\${s3_fss_url}")
+    @Value("\${s3_url}")
     lateinit var s3Endpoint: String
 
     @Value("\${s3_region}")

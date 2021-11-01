@@ -12,17 +12,17 @@ class RetryService(private val storageService: S3StorageService) {
     private val logger = LoggerFactory.getLogger(RetryService::class.java)
 
     companion object {
-        const val RETRY_PATH = "/feilede/"
+        const val RETRY_PATH = "feilede/"
 
     }
 
     fun hentAlleFeiledeHendelser() : List<HendelseModelRetry>{
         val list = storageService.list(RETRY_PATH)
 
-        logger.info("list size: ${list.size}")
+        logger.info("antall feilede hendelser: ${list.size}")
         logger.debug("list: $list")
 
-        val objlist = list.mapNotNull { storageService.get(RETRY_PATH+it)?.let {  mapJsonToAny(it, typeRefs<HendelseModelRetry>()) } }
+        val objlist = list.mapNotNull { storageService.get(it)?.let {  mapJsonToAny(it, typeRefs<HendelseModelRetry>()) } }
 
         logger.info("objlist size: ${objlist.size}")
 
@@ -35,5 +35,7 @@ class RetryService(private val storageService: S3StorageService) {
 
         storageService.delete(RETRY_PATH+filename)
     }
+
+    fun retryHendelseFileName(retry: HendelseModelRetry) : String = "$RETRY_PATH${retry.hendelseType}-${retry.sedHendelseModel?.rinaSakId}-${retry.sedHendelseModel.rinaDokumentId}.json"
 
 }
