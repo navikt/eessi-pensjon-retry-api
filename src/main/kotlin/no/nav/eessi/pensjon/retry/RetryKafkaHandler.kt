@@ -10,7 +10,9 @@ import java.time.LocalDateTime
 class RetryKafkaHandler(private val aivenKafkaTemplate: KafkaTemplate<HendelseModelRetry, String>) {
 
     fun publishRetryHendelsePaaKafka(hendelseModelRetry: HendelseModelRetry) {
+
         aivenKafkaTemplate.send(RetryMessage(hendelseModelRetry)).get()
+
     }
 }
 
