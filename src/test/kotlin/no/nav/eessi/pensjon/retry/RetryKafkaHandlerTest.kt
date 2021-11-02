@@ -1,6 +1,9 @@
 package no.nav.eessi.pensjon.retry
 
 import com.ninjasquad.springmockk.MockkBean
+import io.mockk.mockk
+import io.mockk.spyk
+import io.mockk.verify
 import no.nav.eessi.pensjon.personoppslag.pdl.PersonService
 import no.nav.eessi.pensjon.s3.S3StorageService
 import no.nav.eessi.pensjon.security.sts.STSService
@@ -15,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
-import org.springframework.kafka.annotation.EnableKafka
 import org.springframework.kafka.test.context.EmbeddedKafka
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
@@ -24,10 +26,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.net.ServerSocket
 
 
-
-@SpringBootTest(value = ["SPRING_PROFILES_ACTIVE", "integrationtest"])
+@SpringBootTest(classes = [IntegrasjonsTestConfig::class, RetryIntegrationTest.TestConfig::class], value = ["SPRING_PROFILES_ACTIVE", "integrationtest"])
 @ActiveProfiles("integrationtest")
-@EmbeddedKafka
+@EmbeddedKafka( topics = ["mostperfecttopicname"])
 @AutoConfigureMockMvc
 internal class RetryIntegrationTest() {
 
@@ -45,6 +46,9 @@ internal class RetryIntegrationTest() {
 
     @Autowired
     private lateinit var retryService: RetryService
+
+    @Autowired
+    private lateinit var retryKafkaHandler: RetryKafkaHandler
 
     @Test
     fun `Rest-kall til kontroller skal gi en liste tilbake`() {
@@ -80,9 +84,8 @@ internal class RetryIntegrationTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-
         Assertions.assertEquals(1, retryService.hentAlleFeiledeHendelser().size)
-
+        verify(exactly = 1) { retryKafkaHandler.publishRetryHendelsePaaKafka(any()) }
 
     }
 
@@ -133,12 +136,15 @@ internal class RetryIntegrationTest() {
 
     @TestConfiguration
     class TestConfig {
-        /*@Value("\${" + EmbeddedKafkaBroker.SPRING_EMBEDDED_KAFKA_BROKERS + "}")
-        private lateinit var brokerAddresses: String
-*/
+
         @Bean
         fun storageService(): S3StorageService {
             return S3StorageHelper.createStoreService().also { it.init() }
+        }
+
+        @Bean
+        fun retryKafkaHandler(): RetryKafkaHandler {
+            return spyk(RetryKafkaHandler(mockk(relaxed = true)))
         }
     }
 

@@ -11,16 +11,18 @@ class Controller(private val retryKafkaHandler: RetryKafkaHandler, private val r
 
     private val logger = LoggerFactory.getLogger(Controller::class.java)
 
-
     @PostMapping("retry",  consumes = ["application/json"])
     fun opprettValgtHendelsePaaTopic( @RequestBody retry: HendelseModelRetry) {
+        try {
+            logger.debug("legger retry obj på kafka")
+            retryKafkaHandler.publishRetryHendelsePaaKafka(retry)
 
-        logger.debug("legger retry obj på kafka")
-        retryKafkaHandler.publishRetryHendelsePaaKafka(retry)
+            logger.debug("sletter retry obj fra s3")
+            retryService.slettRetryHendelse(retry)
 
-        logger.debug("sletter retry obj fra s3")
-        retryService.slettRetryHendelse(retry)
-
+        } catch (ex: Exception) {
+            logger.warn("Feilet ved å legge hendlese på topic", ex)
+        }
     }
 
     @GetMapping("retrylist")
