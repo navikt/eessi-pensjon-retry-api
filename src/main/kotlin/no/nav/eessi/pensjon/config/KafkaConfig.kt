@@ -1,6 +1,7 @@
 package no.nav.eessi.pensjon.config
 
 
+import no.nav.eessi.pensjon.retry.HendelseModelRetry
 import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.config.SslConfigs
@@ -13,6 +14,7 @@ import org.springframework.kafka.annotation.EnableKafka
 import org.springframework.kafka.core.DefaultKafkaProducerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.core.ProducerFactory
+import org.springframework.kafka.support.serializer.JsonSerializer
 
 
 @EnableKafka
@@ -28,19 +30,19 @@ class KafkaConfig(
     ) {
 
     @Bean
-    fun aivenProducerFactory(): ProducerFactory<String, String> {
+    fun aivenProducerFactory(): ProducerFactory<HendelseModelRetry, String> {
         val configMap: MutableMap<String, Any> = HashMap()
         populerAivenCommonConfig(configMap)
         configMap[ProducerConfig.CLIENT_ID_CONFIG] = "eessi-pensjon-retry-api"
         configMap[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
-        configMap[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
+        configMap[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = JsonSerializer::class.java
         configMap[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = aivenBootstrapServers
 
         return DefaultKafkaProducerFactory(configMap)
     }
 
     @Bean
-    fun aivenKafkaTemplate(): KafkaTemplate<String, String> {
+    fun aivenKafkaTemplate(): KafkaTemplate<HendelseModelRetry, String> {
         return KafkaTemplate(aivenProducerFactory())
     }
 
