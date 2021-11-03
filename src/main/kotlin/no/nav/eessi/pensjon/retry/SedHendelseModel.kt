@@ -2,7 +2,6 @@ package no.nav.eessi.pensjon.retry
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import no.nav.eessi.pensjon.eux.model.sed.SedType
-import no.nav.eessi.pensjon.personoppslag.Fodselsnummer
 import no.nav.eessi.pensjon.utils.mapJsonToAny
 import no.nav.eessi.pensjon.utils.typeRefs
 
@@ -21,8 +20,7 @@ data class SedHendelseModel(
         val mottakerLand: String? = null,
         val rinaDokumentId: String,
         val rinaDokumentVersjon: String,
-        val sedType: SedType? = null,
-        val navBruker: Fodselsnummer? = null
+        val sedType: SedType? = null
 ) {
     companion object {
         fun fromJson(json: String): SedHendelseModel = mapJsonToAny(json, typeRefs())

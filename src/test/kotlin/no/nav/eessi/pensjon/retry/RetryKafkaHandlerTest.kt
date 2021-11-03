@@ -4,7 +4,6 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
-import no.nav.eessi.pensjon.personoppslag.pdl.PersonService
 import no.nav.eessi.pensjon.s3.S3StorageService
 import no.nav.eessi.pensjon.security.sts.STSService
 import no.nav.eessi.pensjon.utils.mapJsonToAny
@@ -41,9 +40,6 @@ internal class RetryIntegrationTest() {
     @Autowired
     private lateinit var mockMvc: MockMvc
 
-    @MockkBean
-    private lateinit var personService: PersonService
-
     @Autowired
     private lateinit var retryService: RetryService
 
@@ -63,7 +59,7 @@ internal class RetryIntegrationTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
         val expected = """
-            [{"sedHendelseModel":{"id":1869,"sedId":"P2000_b12e06dda2c7474b9998c7139c841646_2","sektorKode":"P","bucType":"P_BUC_01","rinaSakId":"147729","avsenderId":"NO:NAVT003","avsenderNavn":"NAVT003","avsenderLand":"NO","mottakerId":"NO:NAVT007","mottakerNavn":"NAV Test 07","mottakerLand":"NO","rinaDokumentId":"b12e06dda2c7474b9998c7139c841646","rinaDokumentVersjon":"2","sedType":"P2000","navBruker":"09035225916"},"hendelseType":"MOTTATT"},{"sedHendelseModel":{"id":1869,"sedId":"P2000_b12e06dda2c7474b9998c7139c841646_2","sektorKode":"P","bucType":"P_BUC_01","rinaSakId":"147729","avsenderId":"NO:NAVT003","avsenderNavn":"NAVT003","avsenderLand":"NO","mottakerId":"NO:NAVT007","mottakerNavn":"NAV Test 07","mottakerLand":"NO","rinaDokumentId":"b12e06dda2c7474b9998c7139c841646","rinaDokumentVersjon":"2","sedType":"P2000","navBruker":"09035225916"},"hendelseType":"SENDT"}]
+            [{"sedHendelseModel":{"id":1869,"sedId":"P2000_b12e06dda2c7474b9998c7139c841646_2","sektorKode":"P","bucType":"P_BUC_01","rinaSakId":"147729","avsenderId":"NO:NAVT003","avsenderNavn":"NAVT003","avsenderLand":"NO","mottakerId":"NO:NAVT007","mottakerNavn":"NAV Test 07","mottakerLand":"NO","rinaDokumentId":"b12e06dda2c7474b9998c7139c841646","rinaDokumentVersjon":"2","sedType":"P2000"},"hendelseType":"MOTTATT"},{"sedHendelseModel":{"id":1869,"sedId":"P2000_b12e06dda2c7474b9998c7139c841646_2","sektorKode":"P","bucType":"P_BUC_01","rinaSakId":"147729","avsenderId":"NO:NAVT003","avsenderNavn":"NAVT003","avsenderLand":"NO","mottakerId":"NO:NAVT007","mottakerNavn":"NAV Test 07","mottakerLand":"NO","rinaDokumentId":"b12e06dda2c7474b9998c7139c841646","rinaDokumentVersjon":"2","sedType":"P2000"},"hendelseType":"SENDT"}]
             """.trim()
         val resultContent = result.response.getContentAsString(charset("UTF-8"))
         Assertions.assertEquals(expected, resultContent)
@@ -120,8 +116,7 @@ internal class RetryIntegrationTest() {
               "mottakerLand": "NO",
               "rinaDokumentId": "b12e06dda2c7474b9998c7139c841646",
               "rinaDokumentVersjon": "2",
-              "sedType": "P2000",
-              "navBruker": "09035225916"
+              "sedType": "P2000"
             }
         """.trimIndent()
 
