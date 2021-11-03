@@ -17,8 +17,6 @@ spec:
       value: eessipensjon.privat-retry-q2
     - name: S3_URL
       value: http://objectstore.rook-ceph.svc.nais.local
-    - name: EESSI_PENSJON_RETRY_S3_CREDS_USERNAME
-      value: 6CM9IETIVLHPA21OCIWT
     - name: ENV
       value: q2
 
@@ -48,8 +46,8 @@ spec:
     requests:
       cpu: 400m
       memory: 4024Mi
-#  vault:
-#    enabled: true
-#    paths:
-#      - kvPath: {{appsecrets}}
-#        mountPath: /var/run/secrets/nais.io/appcredentials
+  vault:
+    enabled: true
+    paths:
+      - kvPath: {{appsecrets}}
+        mountPath: /var/run/secrets/nais.io/appcredentials

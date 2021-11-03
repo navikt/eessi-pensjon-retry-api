@@ -19,8 +19,6 @@ spec:
       value: https://sts.adeo.no/SecurityTokenServiceProvider/
     - name: S3_URL
       value: http://objectstore.rook-ceph.svc.nais.local
-    - name: EESSI_PENSJON_RETRY_S3_CREDS_USERNAME
-      value: 4BCDP6BBQVV56JZDIGL3
     - name: ENV
       value: p
 
