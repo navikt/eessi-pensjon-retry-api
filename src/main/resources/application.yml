@@ -14,7 +14,6 @@ kafka:
 eessi.pensjon.retry:
   s3:
     bucket.name: 'eessipensjon-retry'
-  s3_region: us-east-1
 
 #Metrics
 management:
