@@ -46,8 +46,10 @@ dependencies {
 
     //eessi pensjon libs
     implementation("no.nav.eessi.pensjon:ep-logging:1.0.12")
-    implementation("no.nav.eessi.pensjon:ep-security-sts:0.0.10")
-    implementation("no.nav.eessi.pensjon:ep-eux:1.0.55")
+    implementation("no.nav.eessi.pensjon:ep-eux:1.0.55") {
+        exclude group: 'no.nav.eessi.pensjon', module: 'ep-security-sts'
+        exclude group: 'org.apache.cxf', module: 'cxf-spring-boot-starter-jaxws'
+    }
     implementation("no.nav.eessi.pensjon:ep-metrics:0.4.0")
 
     // Spring-boot
@@ -92,7 +94,7 @@ dependencies {
         exclude module: 'junit'
     }
     // Architecture tests
-    testImplementation ("com.tngtech.archunit:archunit:${archunitVersion}")
+    testImplementation("com.tngtech.archunit:archunit:${archunitVersion}")
 
 
 }
@@ -148,7 +150,7 @@ repositories {
 
     mavenCentral()
 
-    ["maven-release","ep-metrics", "ep-eux", "ep-security-sts"].each { repo ->
+    ["maven-release", "ep-metrics", "ep-eux"].each { repo ->
         String token = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key")
         if (!token) throw new NullPointerException("Missing token, you have to set GITHUB_TOKEN or gpr.key, see README")
         maven {

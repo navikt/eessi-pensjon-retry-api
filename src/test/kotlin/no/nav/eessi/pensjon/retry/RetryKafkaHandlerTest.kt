@@ -1,11 +1,9 @@
 package no.nav.eessi.pensjon.retry
 
-import com.ninjasquad.springmockk.MockkBean
 import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
 import no.nav.eessi.pensjon.s3.S3StorageService
-import no.nav.eessi.pensjon.security.sts.STSService
 import no.nav.eessi.pensjon.utils.mapJsonToAny
 import no.nav.eessi.pensjon.utils.toJson
 import no.nav.eessi.pensjon.utils.typeRefs
@@ -33,9 +31,6 @@ internal class RetryIntegrationTest() {
 
     @Autowired
     private lateinit var storageService: S3StorageService
-
-    @MockkBean
-    lateinit var stsService: STSService
 
     @Autowired
     private lateinit var mockMvc: MockMvc

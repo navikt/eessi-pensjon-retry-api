@@ -1,5 +1,3 @@
-securityTokenService:
-  discoveryUrl: ${SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL}
 
 kafka:
   keystore.path: ${KAFKA_KEYSTORE_PATH:}
