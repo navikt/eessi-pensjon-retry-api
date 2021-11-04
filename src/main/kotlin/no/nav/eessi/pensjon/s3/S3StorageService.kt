@@ -27,7 +27,7 @@ class S3StorageService(
     }
 
     // Det settes nå kun dfault i prod, namespace brukes i alle andre miljø
-    private fun postfixFasitEnv(): String  = if(env.contains("p", true)) ""  else  "-$env"
+    private fun postfixFasitEnv(): String  = if(env == "p") ""  else  "-$env"
 
     @EventListener(ApplicationReadyEvent::class)
     fun init() {
