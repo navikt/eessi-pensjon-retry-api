@@ -26,15 +26,8 @@ class S3StorageService(
         return bucketname + postfixFasitEnv()
     }
 
-    private fun postfixFasitEnv(): String {
-        var environmentPostfix = "-$env"
-
-        // Det settes nå kun dfault i prod, namespace brukes i alle andre miljø
-        if (env.contains("p", true)) {
-            environmentPostfix = ""
-        }
-        return environmentPostfix
-    }
+    // Det settes nå kun dfault i prod, namespace brukes i alle andre miljø
+    private fun postfixFasitEnv(): String  = if(env.contains("p", true)) ""  else  "-$env"
 
     @EventListener(ApplicationReadyEvent::class)
     fun init() {
