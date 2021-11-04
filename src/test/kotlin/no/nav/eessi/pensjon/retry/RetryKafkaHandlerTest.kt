@@ -49,9 +49,10 @@ internal class RetryIntegrationTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
         val expected = """
-            [{"sedHendelseModel":{"id":1869,"sedId":"P2000_b12e06dda2c7474b9998c7139c841646_2","sektorKode":"P","bucType":"P_BUC_01","rinaSakId":"147729","avsenderId":"NO:NAVT003","avsenderNavn":"NAVT003","avsenderLand":"NO","mottakerId":"NO:NAVT007","mottakerNavn":"NAV Test 07","mottakerLand":"NO","rinaDokumentId":"b12e06dda2c7474b9998c7139c841646","rinaDokumentVersjon":"2","sedType":"P2000"},"hendelseType":"MOTTATT"},{"sedHendelseModel":{"id":1869,"sedId":"P2000_b12e06dda2c7474b9998c7139c841646_2","sektorKode":"P","bucType":"P_BUC_01","rinaSakId":"147729","avsenderId":"NO:NAVT003","avsenderNavn":"NAVT003","avsenderLand":"NO","mottakerId":"NO:NAVT007","mottakerNavn":"NAV Test 07","mottakerLand":"NO","rinaDokumentId":"b12e06dda2c7474b9998c7139c841646","rinaDokumentVersjon":"2","sedType":"P2000"},"hendelseType":"SENDT"}]
-            """.trim()
-        val resultContent = result.response.getContentAsString(charset("UTF-8"))
+            [{"sedHendelseModel":{"id":1869,"sedId":"P2000_b12e06dda2c7474b9998c7139c841646_2","sektorKode":"P","bucType":"P_BUC_01","rinaSakId":"147729","avsenderId":"NO:NAVT003","avsenderNavn":"NAVT003","avsenderLand":"NO","mottakerId":"NO:NAVT007","mottakerNavn":"NAV Test 07","mottakerLand":"NO","rinaDokumentId":"b12e06dda2c7474b9998c7139c841646","rinaDokumentVersjon":"2","sedType":"P2000","attemptedRetryTime":[]},"hendelseType":"MOTTATT"}
+            ,{"sedHendelseModel":{"id":1869,"sedId":"P2000_b12e06dda2c7474b9998c7139c841646_2","sektorKode":"P","bucType":"P_BUC_01","rinaSakId":"147729","avsenderId":"NO:NAVT003","avsenderNavn":"NAVT003","avsenderLand":"NO","mottakerId":"NO:NAVT007","mottakerNavn":"NAV Test 07","mottakerLand":"NO","rinaDokumentId":"b12e06dda2c7474b9998c7139c841646","rinaDokumentVersjon":"2","sedType":"P2000","attemptedRetryTime":[]},"hendelseType":"SENDT"}]
+            """.filter { !it.isWhitespace() }
+        val resultContent = result.response.getContentAsString(charset("UTF-8")).filter { !it.isWhitespace() }
         Assertions.assertEquals(expected, resultContent)
     }
 
@@ -106,7 +107,8 @@ internal class RetryIntegrationTest() {
               "mottakerLand": "NO",
               "rinaDokumentId": "b12e06dda2c7474b9998c7139c841646",
               "rinaDokumentVersjon": "2",
-              "sedType": "P2000"
+              "sedType": "P2000",
+              "attemptedRetryTime":[]
             }
         """.trimIndent()
 

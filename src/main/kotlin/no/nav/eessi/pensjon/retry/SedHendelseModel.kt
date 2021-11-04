@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import no.nav.eessi.pensjon.eux.model.sed.SedType
 import no.nav.eessi.pensjon.utils.mapJsonToAny
 import no.nav.eessi.pensjon.utils.typeRefs
+import org.joda.time.LocalDateTime
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class SedHendelseModel(
@@ -20,7 +21,8 @@ data class SedHendelseModel(
         val mottakerLand: String? = null,
         val rinaDokumentId: String,
         val rinaDokumentVersjon: String,
-        val sedType: SedType? = null
+        val sedType: SedType? = null,
+        val attemptedRetryTime : List<LocalDateTime> = emptyList()
 ) {
     companion object {
         fun fromJson(json: String): SedHendelseModel = mapJsonToAny(json, typeRefs())
