@@ -35,9 +35,7 @@ class S3StorageServiceTest {
                 .build()
 
         s3MockClient.createBucket("eessipensjon")
-        storageService = S3StorageService(s3MockClient)
-        storageService.bucketname = "eessipensjon"
-        storageService.env = "q1"
+        storageService = S3StorageService(s3MockClient, "eessipension", "test")
         storageService.init()
     }
 

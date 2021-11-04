@@ -1,7 +1,5 @@
 package no.nav.eessi.pensjon.retry
 
-import io.mockk.mockk
-import io.mockk.spyk
 import io.mockk.verify
 import no.nav.eessi.pensjon.s3.S3StorageService
 import no.nav.eessi.pensjon.utils.mapJsonToAny
@@ -12,18 +10,15 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
 import org.springframework.kafka.test.context.EmbeddedKafka
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.net.ServerSocket
 
 
-@SpringBootTest(classes = [IntegrasjonsTestConfig::class, RetryIntegrationTest.TestConfig::class], value = ["SPRING_PROFILES_ACTIVE", "integrationtest"])
+@SpringBootTest(classes = [IntegrasjonsTestConfig::class], value = ["SPRING_PROFILES_ACTIVE", "integrationtest"])
 @ActiveProfiles("integrationtest")
 @EmbeddedKafka( topics = ["mostperfecttopicname"])
 @AutoConfigureMockMvc
@@ -119,23 +114,5 @@ internal class RetryIntegrationTest() {
             mapJsonToAny(mockhendelse, typeRefs()),
             hendelseType = hendelseType
         )
-
     }
-
-    fun randomOpenPort(): Int = ServerSocket(0).use { it.localPort }
-
-    @TestConfiguration
-    class TestConfig {
-
-        @Bean
-        fun storageService(): S3StorageService {
-            return S3StorageHelper.createStoreService().also { it.init() }
-        }
-
-        @Bean
-        fun retryKafkaHandler(): RetryKafkaHandler {
-            return spyk(RetryKafkaHandler(mockk(relaxed = true)))
-        }
-    }
-
 }

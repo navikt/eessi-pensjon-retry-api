@@ -1,5 +1,13 @@
 package no.nav.eessi.pensjon.retry
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider
+import com.amazonaws.auth.AnonymousAWSCredentials
+import com.amazonaws.client.builder.AwsClientBuilder
+import com.amazonaws.services.s3.AmazonS3
+import com.amazonaws.services.s3.AmazonS3ClientBuilder
+import io.findify.s3mock.S3Mock
+import io.mockk.mockk
+import io.mockk.spyk
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringDeserializer
@@ -15,6 +23,7 @@ import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.core.ProducerFactory
 import org.springframework.kafka.support.serializer.JsonSerializer
 import org.springframework.kafka.test.EmbeddedKafkaBroker
+import java.net.ServerSocket
 
 @TestConfiguration
 class IntegrasjonsTestConfig {
@@ -49,5 +58,28 @@ class IntegrasjonsTestConfig {
         val kafka = KafkaTemplate(producerFactory())
         kafka.defaultTopic = "awsomesauce"
         return kafka
+    }
+
+    @Bean
+    fun s3(): AmazonS3 {
+
+        val s3Port = ServerSocket(0).use { it.localPort }
+
+        S3Mock.Builder().withPort(s3Port).withInMemoryBackend()
+            .build()
+            .also { it.start() }
+
+        return AmazonS3ClientBuilder.standard()
+            .withPathStyleAccessEnabled(true)
+            .withCredentials(AWSStaticCredentialsProvider(AnonymousAWSCredentials()))
+            .withEndpointConfiguration(
+                AwsClientBuilder.EndpointConfiguration("http://localhost:$s3Port", "us-east-1")
+            )
+            .build()
+    }
+
+    @Bean
+    fun retryKafkaHandler(): RetryKafkaHandler {
+        return spyk(RetryKafkaHandler(mockk(relaxed = true)))
     }
 }

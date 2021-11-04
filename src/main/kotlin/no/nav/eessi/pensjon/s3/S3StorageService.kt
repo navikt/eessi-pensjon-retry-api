@@ -16,14 +16,11 @@ import java.util.stream.Collectors.joining
 private val logger = LoggerFactory.getLogger(S3StorageService::class.java)
 
 @Component
-@Profile("!integrationtest")
-class S3StorageService(private val s3: AmazonS3){
-
-    @Value("\${eessi.pensjon.retry.s3.bucket.name}")
-    lateinit var bucketname: String
-
-    @Value("\${ENV}")
-    lateinit var env: String
+class S3StorageService(
+    private val s3: AmazonS3,
+    @Value("\${eessi.pensjon.retry.s3.bucket.name}") val bucketname: String,
+    @Value("\${ENV}") val env: String)
+{
 
     fun getBucketName(): String {
         return bucketname + postfixFasitEnv()
@@ -74,7 +71,7 @@ class S3StorageService(private val s3: AmazonS3){
         val bucketExists = s3.listBuckets().stream()
             .anyMatch { it.name == getBucketName() }
         if (!bucketExists) {
-            logger.debug("Bucket does not exist, creating new bucket")
+            logger.debug("Bucket does not exist, creating new bucket: $bucketname")
             s3.createBucket(CreateBucketRequest(getBucketName()).withCannedAcl(CannedAccessControlList.Private))
         }
     }
